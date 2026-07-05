@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai')
 
-const genAI = new GoogleGenerativeAI('AQ.Ab8RN6KfY1ihOVAsK80KOPnCrBqJ79SzVlbeJvfck6rtFuxHUA')
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
 
 const summarizeText = async (text) => {
   const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
