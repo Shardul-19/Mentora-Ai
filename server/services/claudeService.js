@@ -1,11 +1,16 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai')
+const OpenAI = require('openai')
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
 
 const summarizeText = async (text) => {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
-
-  const prompt = `You are an expert academic assistant. Summarize the following notes in this exact structured format:
+  const response = await client.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages: [
+      {
+        role: 'user',
+        content: `You are an expert academic assistant. Summarize the following notes in this exact structured format:
 
 KEY TOPICS:
 - List main topics covered
@@ -24,9 +29,11 @@ Detailed paragraph summary
 
 Here are the notes to summarize:
 ${text}`
+      }
+    ]
+  })
 
-  const result = await model.generateContent(prompt)
-  return result.response.text()
+  return response.choices[0].message.content
 }
 
 module.exports = { summarizeText }
