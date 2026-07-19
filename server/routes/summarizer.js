@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const { summarizeNotes } = require('../controllers/summarizerController')
 const upload = require('../middleware/upload')
+const { protect } = require('../middleware/authMiddleware')
 
-router.post('/', upload.single('file'), summarizeNotes)
+router.post('/', protect, upload.single('file'), summarizeNotes)
 
 module.exports = router
