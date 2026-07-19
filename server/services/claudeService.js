@@ -10,7 +10,7 @@ const summarizeText = async (text) => {
     messages: [
       {
         role: 'user',
-        content: `You are an expert academic assistant. Summarize the following notes in this exact structured format:
+        content: `You are an expert academic assistant helping Indian college students. Summarize the following notes in this exact structured format:
 
 KEY TOPICS:
 - List main topics covered
@@ -32,8 +32,31 @@ ${text}`
       }
     ]
   })
-
   return response.choices[0].message.content
 }
 
-module.exports = { summarizeText }
+const solveDoubt = async (prompt) => {
+  const response = await client.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'user', content: prompt }]
+  })
+  return response.choices[0].message.content
+}
+
+const helpAssignment = async (prompt) => {
+  const response = await client.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'user', content: prompt }]
+  })
+  return response.choices[0].message.content
+}
+
+const analyzeTimetable = async (prompt) => {
+  const response = await client.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'user', content: prompt }]
+  })
+  return response.choices[0].message.content
+}
+
+module.exports = { summarizeText, solveDoubt, helpAssignment, analyzeTimetable }
