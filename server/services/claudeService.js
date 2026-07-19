@@ -60,3 +60,4 @@ const analyzeTimetable = async (prompt) => {
 }
 
 module.exports = { summarizeText, solveDoubt, helpAssignment, analyzeTimetable }
+
