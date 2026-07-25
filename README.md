@@ -16,3 +16,117 @@ Developer’s Information:
 
  1 - Shardul Rasal : ENTC Student at Symbiosis Institute of Technology
  2 - Sara Joshi : CSE Student at Marathwada Mitramandal’s College of Engineering
+
+
+
+
+# Mentora AI 🤖
+### The Ultimate Academic Cheat Code!
+
+An AI-powered student toolkit built for Indian college students. Mentora AI helps you summarize notes, solve doubts, plan assignments, and manage your timetable — all in one place.
+
+---
+
+## 🚀 Live Demo
+- **Backend API:** https://mentora-ai-production-6560.up.railway.app/
+- **Frontend:** Coming soon!
+
+---
+
+## ✨ Features
+- 📄 **Notes Summarizer** — Upload PDF/TXT notes and get structured AI summaries
+- 💬 **Doubt Solver** — Ask any academic question and get detailed explanations
+- ✏️ **Assignment Helper** — Get step-by-step help with any assignment
+- 📅 **Timetable Manager** — Organize your weekly class schedule
+- 🔐 **Auth System** — Secure student login/signup with JWT
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React + Vite
+- Tailwind CSS
+- React Router DOM
+
+### Backend
+- Node.js + Express
+- Supabase (Database + Auth)
+- OpenAI API (AI features)
+- Railway (Deployment)
+
+---
+
+## 📁 Project Structure
+
+
+
+---
+
+## 🔌 API Endpoints
+
+### Auth
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/auth/signup | Create new account |
+| POST | /api/auth/login | Login |
+| POST | /api/auth/logout | Logout |
+
+### Tools (Protected — requires JWT token)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/summarize | Summarize notes (file upload) |
+| POST | /api/doubt | Solve academic doubt |
+| POST | /api/assignment | Get assignment help |
+| POST | /api/timetable | Manage timetable |
+
+---
+
+## ⚙️ Setup & Installation
+
+### Prerequisites
+- Node.js v18+
+- Supabase account
+- OpenAI API key
+
+### Backend Setup
+```bash
+cd server
+npm install
+```
+
+Create `server/.env`:
+
+
+
+PORT=5000
+OPENAI_API_KEY=your_key
+SUPABASE_URL=your_url
+SUPABASE_ANON_KEY=your_key
+
+
+Run server:
+```bash
+npm start
+```
+
+### Frontend Setup
+```bash
+cd client
+npm install
+npm run dev
+```
+
+---
+
+## 👥 Team
+- **Shardul Rasal** — Backend, API Integration, AI Prompt Engineering
+- **Sara Joshi** — Frontend, UI/UX Design
+
+---
+
+## 📄 License
+MIT License — feel free to use and modify
+
+
+
