@@ -1,10 +1,8 @@
+const supabase = require('../services/supabaseClient')
+
 const solveDoubt = async (req, res) => {
   try {
     const { question, subject } = req.body
-
-    if (!question) {
-      return res.status(400).json({ error: 'Question is required' })
-    }
 
     const prompt = `You are an expert ${subject || 'academic'} tutor helping an Indian college student understand concepts clearly.
 
@@ -28,6 +26,20 @@ Give a real world or practical example
 
 PRO TIP:
 One important tip to remember this concept forever`
+
+    // Save to Supabase
+    const { error: dbError } = await supabase
+      .from('doubts')
+      .insert({
+        user_id: req.user.id,
+        question,
+        subject,
+        answer: 'AI answer will appear here once API is connected'
+      })
+
+    if (dbError) {
+      console.error('DB Error:', dbError)
+    }
 
     res.json({
       success: true,

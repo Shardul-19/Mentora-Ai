@@ -1,55 +1,52 @@
-const helpAssignment = async (req, res) => {
-  try {
-    const { assignment, subject, deadline } = req.body
+const pdfParse = require('pdf-parse')
+const { summarizeText } = require('../services/claudeService')
+const supabase = require('../services/supabaseClient')
 
-    if (!assignment) {
-      return res.status(400).json({ error: 'Assignment details are required' })
+const summarizeNotes = async (req, res) => {
+  try {
+    const file = req.file
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded' })
     }
 
-    const prompt = `You are an expert academic assistant helping an Indian college student complete their assignment.
+    let extractedText = ''
+    if (file.mimetype === 'application/pdf') {
+      const data = await pdfParse(file.buffer)
+      extractedText = data.text
+    } else {
+      extractedText = file.buffer.toString('utf-8')
+    }
 
-Subject: ${subject || 'General'}
-Deadline: ${deadline || 'Not specified'}
-Assignment: "${assignment}"
+    if (!extractedText || extractedText.trim().length === 0) {
+      return res.status(400).json({ error: 'Could not extract text from file' })
+    }
 
-Help in this exact format:
+    console.log('Sending to AI...')
+    const summary = await summarizeText(extractedText)
+    console.log('Summary received!')
 
-UNDERSTANDING THE ASSIGNMENT:
-Break down what exactly is being asked
+    // Save to Supabase
+    const { error: dbError } = await supabase
+      .from('summaries')
+      .insert({
+        user_id: req.user.id,
+        file_name: file.originalname,
+        summary: summary
+      })
 
-STEP BY STEP APPROACH:
-1. Step 1
-2. Step 2
-3. Step 3
+    if (dbError) {
+      console.error('DB Error:', dbError)
+    }
 
-KEY CONCEPTS TO COVER:
-- Concept 1
-- Concept 2
-- Concept 3
-
-SUGGESTED STRUCTURE:
-Give a proper structure/outline for the assignment
-
-IMPORTANT POINTS:
-- Point 1
-- Point 2
-
-RESOURCES TO REFER:
-Suggest relevant topics to study`
-
-    res.json({
+    res.json({ 
       success: true,
-      assignment,
-      subject,
-      deadline,
-      prompt,
-      help: 'AI assignment help will appear here once API is connected'
+      summary
     })
 
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ error: 'Failed to process assignment' })
+    console.error('FULL ERROR:', error.message)
+    res.status(500).json({ error: error.message })
   }
 }
 
-module.exports = { helpAssignment }
+module.exports = { summarizeNotes }
